@@ -43,8 +43,6 @@ let low = 26_000;
 var stream = fs.createWriteStream("./data/repos.csv", {flags:'a'});
 
 while (high >= 200) {
-	console.log(`Searching for star range...`);
-
 	let res = await octokit.request('GET /search/repositories', {
 		headers: {
 		  'X-GitHub-Api-Version': '2022-11-28'
@@ -162,4 +160,6 @@ while (high >= 200) {
 	console.log(`Star range complete: ${low}..${high}`);
 	high = low - 1;
 	low = 200;
+
+	console.log(`Searching for star range...`);
 }
