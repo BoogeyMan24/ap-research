@@ -154,7 +154,7 @@ while (high >= 200) {
 		}
 
 		count += reposRes.data.items.length;
-		console.log(`${count} of ${totalCount} repos completed: ${(count / totalCount).toFixed(2)}% (${Date.now() - time}ms)`);
+		console.log(`${count} of ${totalCount} repos completed: ${(count / totalCount * 100).toFixed(2)}% (${Date.now() - time}ms)`);
 	}
 
 	console.log(`Star range complete: ${low}..${high}`);
