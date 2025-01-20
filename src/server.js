@@ -37,8 +37,8 @@ const serializeRow = (row, delimiter = ',') => row.map(value => serializeValue(v
 const totalCount = 221_654;
 let count = 0;
 
-let high = 500_000;
-let low = 26_000;
+let high = 500_000
+let low = 26_000
 
 var stream = fs.createWriteStream("./data/repos.csv", {flags:'a'});
 
@@ -159,7 +159,7 @@ while (high >= 200) {
 
 	console.log(`Star range complete: ${low}..${high}`);
 	high = low - 1;
-	low = 200;
+	low = Math.ceil(high * 0.95);
 
 	console.log(`Searching for star range...`);
 }
