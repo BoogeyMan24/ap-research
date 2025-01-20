@@ -42,8 +42,9 @@ let low = 26_000;
 
 var stream = fs.createWriteStream("./data/repos.csv", {flags:'a'});
 
-
 while (high > 200) {
+	console.log(`Star range: ${low}..${high}`);
+
 	let res = await octokit.request('GET /search/repositories', {
 		headers: {
 		  'X-GitHub-Api-Version': '2022-11-28'
@@ -56,7 +57,7 @@ while (high > 200) {
 	});
 
 	if (res.data.total_count > 1000) {
-		low += (high - low) / 2;
+		low += Math.ceil((high - low) / 2);
 		continue;
 	}
 	
@@ -154,7 +155,8 @@ while (high > 200) {
 		console.log(`${count} of ${totalCount} repos completed: ${(count / totalCount).toFixed(2)}% (${Date.now() - time}ms)`);
 	}
 
-	console.log(`Star range: ${low}..${high}`);
+	console.log(`Star range complete: ${low}..${high}`);
 	high = low - 1;
 	low = 200;
+	console.log(`Searching for new range...`);
 }
