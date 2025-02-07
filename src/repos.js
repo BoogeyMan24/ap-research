@@ -2,6 +2,7 @@ import './loadEnv.js';
 import { Octokit, App } from "octokit";
 import { convertArrayToCSV } from "convert-array-to-csv";
 import fs from "fs";
+import { serializeRow } from './helper-functions.js';
 
 const octokit = new Octokit({ 
 	auth: process.env.GITHUB_TOKEN
@@ -9,28 +10,27 @@ const octokit = new Octokit({
 
 // had to over complicate the code to get around the 100 page limit BRUHHH
 
-// Helper functions adapted from https://www.30secondsofcode.org/js/s/convert-csv-to-array-object-or-json/
-const isEmptyValue = value =>
-	value === null || value === undefined || Number.isNaN(value);
+
+// const isEmptyValue = value =>
+// 	value === null || value === undefined || Number.isNaN(value);
   
-const serializeValue = (value, delimiter = ',') => {
-	if (isEmptyValue(value)) return '';
-	if (Array.isArray(value)) {
-		value = `"['${value.join("','")}']"`;
+// const serializeValue = (value, delimiter = ',') => {
+// 	if (isEmptyValue(value)) return '';
+// 	if (Array.isArray(value)) {
+// 		value = `"['${value.join("','")}']"`;
 
-	} else {
-		value = `${value}`;
+// 	} else {
+// 		value = `${value}`;
 
-		if (value.includes(delimiter) || value.includes('\n') || value.includes('"')) {
-			return `"${value.replace(/"/g, '""').replace(/\n/g, '\\n')}"`;
-		}
-	}
+// 		if (value.includes(delimiter) || value.includes('\n') || value.includes('"')) {
+// 			return `"${value.replace(/"/g, '""').replace(/\n/g, '\\n')}"`;
+// 		}
+// 	}
 
-	return value;
-};
+// 	return value;
+// };
   
-const serializeRow = (row, delimiter = ',') => row.map(value => serializeValue(value, delimiter)).join(delimiter);
-
+// const serializeRow = (row, delimiter = ',') => row.map(value => serializeValue(value, delimiter)).join(delimiter);
 
 // const header = ['name', 'description', 'url', 'created_at', 'update_at', 'owner_name', 'owner_url', 'owner_type', 'size', 'stars', 'forks', 'issues', 'watchers', 'language', 'topics', 'has_issues', 'has_projects', 'has_downloads', 'has_wiki', 'has_pages', 'has_discussions', 'issues_url', 'issues_comments_url', 'comments_url', 'pulls_url', 'discussions_url', 'default_branch', 'fork', 'template', 'archived', 'disabled'];
 
@@ -40,7 +40,9 @@ let count = 0;
 let high = 500_000
 let low = 26_000
 
-var stream = fs.createWriteStream("./data/repos.csv", {flags:'a'});
+var stream = fs.createWriteStream("./data/repos.csv", { flags: 'a' });
+
+let ids = 0;
 
 while (high >= 200) {
 	let res = await octokit.request('GET /search/repositories', {
@@ -115,8 +117,9 @@ while (high >= 200) {
 			// 	archived: repositoryData.archived,
 			// 	disabled: repositoryData.disabled
 			// }
-	
+			
 			let repository = [
+				id,
 				repositoryData.name,
 				repositoryData.description,
 				repositoryData.html_url,
@@ -148,7 +151,9 @@ while (high >= 200) {
 				repositoryData.is_template,
 				repositoryData.archived,
 				repositoryData.disabled
-			]
+			];
+
+			ids++;
 	
 			stream.write(serializeRow(repository) + "\n");
 		}

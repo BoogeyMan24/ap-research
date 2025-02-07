@@ -1,18 +1,25 @@
 {
-  "name": "code",
-  "version": "1.0.0",
-  "main": "src/server.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Petr Hora",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "convert-array-to-csv": "^2.0.0",
-    "dotenv": "^16.4.7",
-    "fs": "^0.0.1-security",
-    "octokit": "^4.1.0"
-  }
+	"name": "code",
+	"version": "1.0.0",
+	"main": "src/server.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"get-repos": "node ./src/repos.js",
+		"clean-repos": "node ./src/clean.js",
+		"get-comments": "node ./src/comments.js",
+		"add-ids": "node ./src/add-ids.js",
+		"get-ratelimit": "node ./src/get-ratelimit.js"
+	},
+	"author": "Petr Hora",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"convert-array-to-csv": "^2.0.0",
+		"csv-parser": "^3.1.0",
+		"dotenv": "^16.4.7",
+		"fs": "^0.0.1-security",
+		"octokit": "^4.1.0",
+		"parse-link-header": "^2.0.0"
+	}
 }
