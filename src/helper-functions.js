@@ -6,7 +6,7 @@ export const isEmptyValue = value =>
 export const serializeValue = (value, delimiter = ',') => {
 	if (isEmptyValue(value)) return '';
 	if (Array.isArray(value)) {
-		value = `"['${value.join("','")}']"`;
+		value = `"['${value.join(`'${delimiter}'`)}']"`;
 
 	} else {
 		value = `${value}`;
