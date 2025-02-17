@@ -62,6 +62,8 @@ let unvisitedArray = Array.from(unvisitedSet);
 
 let count = 0;
 
+
+const errorsWrite = fs.createWriteStream('./data/errors.txt', { flags: "a" });
 for (let i = 0; i < unvisitedArray.length; i++) {
 	let randomRepoId = unvisitedArray[getRandomInteger(0, unvisitedArray.length)];
 
@@ -77,7 +79,9 @@ for (let i = 0; i < unvisitedArray.length; i++) {
 			unvisitedArray = Array.from(unvisitedSet);
 		} catch (e) {
 			console.log(e);
-			
+
+			errorsWrite.write(randomRepoId + ": " + e + "\n")
+
 			await new Promise((resolve) => { setTimeout(() => { resolve() }, 60 * 1000) });
 		}
 
