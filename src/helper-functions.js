@@ -12,7 +12,7 @@ export const serializeValue = (value, delimiter = ',') => {
 		value = `${value}`;
 
 		if (value.includes(delimiter) || value.includes('\r') || value.includes('\n') || value.includes('"')) {
-			return `"${value.replace(/"/g, '\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r')}"`;
+			return `"${value.replace(/"/g, "'").replace(/\n/g, ' ').replace(/\r/g, ' ').replace(/\t/g, ' ')}"`;
 		}
 	}
 
