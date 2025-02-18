@@ -70,7 +70,6 @@ const errorsWrite = fs.createWriteStream('./data/errors.txt', { flags: "a" });
 for (let i = 0; i < unvisitedArray.length; i++) {
 	let randomRepoId = unvisitedArray[getRandomInteger(0, unvisitedArray.length)];
 
-
 	let repoRow = await findRepoById(randomRepoId);
 	repoId = repoRow.id;
 
@@ -120,13 +119,12 @@ async function findRepoById(repoId) {
 
 async function getComments(row) {
 	return new Promise(async (resolve, reject) => {
-		if (row.has_issues == "true") {
 
+		if (row.has_issues == "true") {
 
 			let link = row.issues_comments_url.slice(22, -9);
 	
 			console.log(`Starting search for (${repoId}): ${link}`);
-	
 	
 			let resInit = await octokit.request(`GET ${link}`, {
 				headers: {

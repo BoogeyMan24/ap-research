@@ -8,7 +8,7 @@ import { serializeRow } from './helper-functions.js';
 const fileWrite = fs.createWriteStream('./data/repos-en-quoted.csv', { flags: "a" });
 
 const rl = readline.createInterface({
-	input: fs.createReadStream('./data/repos-en.csv', { encoding: 'utf8' }),
+	input: fs.createReadStream('./data/repos-en-unquoted.csv', { encoding: 'utf8' }),
 	crlfDelay: Infinity
 });
 
@@ -33,7 +33,7 @@ rl.on('line', (line) => {
 		newDescription = "\"" + newDescription.replaceAll("\"", "'") + "\"";
 	}
 
-	fileWrite.write(line.slice(0, startDescription) + "," + newDescription + "," + line.slice(endDescription) + "\n");
+	fileWrite.write(line.slice(0, startDescription) + "," + newDescription + line.slice(endDescription) + "\n");
 
 	if (count % 100000 === 0) console.log(`Read ${count} rows`);
 });
