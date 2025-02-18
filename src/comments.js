@@ -162,7 +162,7 @@ async function getComments(row) {
 						commentData.body
 					];
 
-					if (commentData.user.type == "Bots") {
+					if (commentData.user.type == "Bot") {
 						commentBots++;
 					}
 
@@ -222,7 +222,7 @@ async function getComments(row) {
 							commentData.body
 						];
 
-						if (commentData.user.type == "Bots") {
+						if (commentData.user.type == "Bot") {
 							commentBots++;
 						}
 	
@@ -283,7 +283,7 @@ async function getComments(row) {
 							commentData.body
 						];
 
-						if (commentData.user.type == "Bots") {
+						if (commentData.user.type == "Bot") {
 							commentBots++;
 						}
 	
@@ -383,7 +383,7 @@ async function getComments(row) {
 								commentData.body
 							];
 
-							if (commentData.user.type == "Bots") {
+							if (commentData.user.type == "Bot") {
 								commentBots++;
 							}
 		
