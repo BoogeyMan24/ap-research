@@ -12,7 +12,7 @@ const fileWrite = fs.createWriteStream('./data/comments.tsv', { flags: "a", high
 // 	crlfDelay: Infinity
 // });
 
-let count = 0;
+// let count = 0;
 // rl.on('line', (line) => {
 // 	count++;
 // 	if (count == 1) return;
