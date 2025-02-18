@@ -91,25 +91,24 @@ for (let i = 0; i < unvisitedArray.length; i++) {
 		console.log("Failed to find repo with ID: " + randomRepoId);
 	}
 	
-
 	count++;
 }
 
+let repoMap = new Map();
 async function findRepoById(repoId) {
-	return new Promise((resolve, reject) => {
-		let repoRow = "";
-
-		fs.createReadStream('./data/repos-en.csv')
-			.pipe(csv())
-			.on("data", async (row) => {
-				if (row.id == repoId) {
-					repoRow = row;
-				}
-			})
-			.on("end", () => {
-				resolve(repoRow);
-			});
-	});
+	if (repoMap.size == 0) {
+		await new Promise((resolve) => {
+			fs.createReadStream('./data/repos-en.csv')
+				.pipe(csv())
+				.on("data", async (row) => {
+					repoMap.set(row.id, row);
+				})
+				.on("end", () => {
+					resolve();
+				});
+		});
+	}
+	return repoMap.get(repoId);
 }
 
 
