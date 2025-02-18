@@ -37,7 +37,7 @@ setInterval(progress, 1 * 1000); // every second
 async function getUnvisited() {
 	let unvisited = new Set();
 	await new Promise((resolve, reject) => {
-		fs.createReadStream('./data/repos-en-quoted.csv')
+		fs.createReadStream('./data/repos-en.csv')
 			.pipe(csv())
 			.on("data", async (row) => {
 				unvisited.add(row.id);
@@ -100,7 +100,7 @@ for (let i = 0; i < unvisitedArray.length; i++) {
 async function findRepoById(repoId) {
 	if (repoMap.size == 0) {
 		await new Promise((resolve) => {
-			fs.createReadStream('./data/repos-en-quoted.csv')
+			fs.createReadStream('./data/repos-en.csv')
 				.pipe(csv())
 				.on("data", async (row) => {
 					repoMap.set(row.id, row);
