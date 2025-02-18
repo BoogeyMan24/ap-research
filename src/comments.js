@@ -303,6 +303,152 @@ async function getComments(row) {
 					completed++;
 		
 					gettingComments = false;
+				} else if (lastPage == 4) {
+					let resTwo = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: 2,
+					});
+
+					let resThree = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: 3,
+					});
+
+					let resFour = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: lastPage,
+					});
+
+					let comments = [];
+					let commentsData = [...resInit.data, ...resTwo.data, ...resThree.data, ...resFour.data];
+	
+					commentTotal = commentsData.length;
+	
+					gettingComments = true;
+	
+					progress();
+					
+					for (let i = 0; i < commentsData.length; i++) {
+	
+						let commentData = commentsData[i];
+	
+						let comment = [
+							row.id,
+							row.name,
+							commentData.id,
+							commentData.node_id,
+							commentData.html_url,
+							commentData.author_association,
+							commentData.user.type,
+							commentData.body
+						];
+
+						if (commentData.user.type == "Bot") {
+							commentBots++;
+						}
+	
+						comments.push(serializeRow(comment) + "\n");
+						commentCount++;
+					}
+	
+					for (let comment of comments) {
+						commentsWrite.write(comment);
+					}
+	
+					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + (resInit.data.length + resTwo.data.length + resThree.data.length + resFour.data.length) + "," + commentBots + "," + comments.length + "\n");
+	
+					progress();
+	
+					console.log(`Complete! Adding repo (${row.id}) to commented/visited`);
+					completed++;
+		
+					gettingComments = false;
+				} else if (lastPage == 5) {
+					let resTwo = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: 2,
+					});
+
+					let resThree = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: 3,
+					});
+
+					let resFour = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: 4,
+					});
+
+					let resFive = await octokit.request(`GET ${link}`, {
+						headers: {
+						'X-GitHub-Api-Version': '2022-11-28'
+						},
+						per_page: 100,
+						page: lastPage,
+					});
+
+					let comments = [];
+					let commentsData = [...resInit.data, ...resTwo.data, ...resThree.data, ...resFour.data, ...resFive.data];
+	
+					commentTotal = commentsData.length;
+	
+					gettingComments = true;
+	
+					progress();
+					
+					for (let i = 0; i < commentsData.length; i++) {
+	
+						let commentData = commentsData[i];
+	
+						let comment = [
+							row.id,
+							row.name,
+							commentData.id,
+							commentData.node_id,
+							commentData.html_url,
+							commentData.author_association,
+							commentData.user.type,
+							commentData.body
+						];
+
+						if (commentData.user.type == "Bot") {
+							commentBots++;
+						}
+	
+						comments.push(serializeRow(comment) + "\n");
+						commentCount++;
+					}
+	
+					for (let comment of comments) {
+						commentsWrite.write(comment);
+					}
+	
+					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + (resInit.data.length + resTwo.data.length + resThree.data.length + resFour.data.length + resFive.data.length) + "," + commentBots + "," + comments.length + "\n");
+	
+					progress();
+	
+					console.log(`Complete! Adding repo (${row.id}) to commented/visited`);
+					completed++;
+		
+					gettingComments = false;
 				} else  {
 					let resLast = await octokit.request(`GET ${link}`, {
 						headers: {
@@ -327,7 +473,7 @@ async function getComments(row) {
 		
 					let numOfComments = 0;
 		
-					while (numOfComments < 300) {
+					while (numOfComments < 500) {
 						let randomComment = getRandomInteger(0, totalComments);
 						let page = Math.ceil(randomComment / 100);
 						let comment = randomComment % 100;
@@ -347,7 +493,7 @@ async function getComments(row) {
 						}
 					}
 		
-					console.log(`Total comments (${totalComments})  Required comments (${300})  Comments lottery (${numOfComments}): ${(numOfComments/300 * 100).toFixed(2)}%`);
+					console.log(`Total comments (${totalComments})  Required comments (${500})  Comments lottery (${numOfComments}): ${(numOfComments/500 * 100).toFixed(2)}%`);
 					gettingComments = true;
 					
 					
