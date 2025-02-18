@@ -329,7 +329,7 @@ async function getComments(row) {
 						}
 					}
 		
-					console.log(`Total comments (${totalComments})  Required comments (${200})  Comments lottery (${numOfComments}): ${(numOfComments/200 * 100).toFixed(2)}%`);
+					console.log(`Total comments (${totalComments})  Required comments (${300})  Comments lottery (${numOfComments}): ${(numOfComments/300 * 100).toFixed(2)}%`);
 					gettingComments = true;
 					
 					
