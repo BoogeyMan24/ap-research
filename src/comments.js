@@ -95,6 +95,7 @@ for (let i = 0; i < unvisitedArray.length; i++) {
 	count++;
 }
 
+let counter = 0;
 async function findRepoById(repoId) {
 	if (repoMap.size == 0) {
 		await new Promise((resolve) => {
@@ -102,6 +103,9 @@ async function findRepoById(repoId) {
 				.pipe(csv())
 				.on("data", async (row) => {
 					repoMap.set(row.id, row);
+					
+					counter++;
+					if (counter % 5000 == 0) console.log(`Loaded ${counter} repos.`);
 				})
 				.on("end", () => {
 					resolve();
