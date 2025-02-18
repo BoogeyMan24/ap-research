@@ -57,6 +57,7 @@ async function getUnvisited() {
 	return unvisited;
 }
 
+let repoMap = new Map();
 let unvisitedSet = await getUnvisited();
 let unvisitedArray = Array.from(unvisitedSet);
 
@@ -94,7 +95,6 @@ for (let i = 0; i < unvisitedArray.length; i++) {
 	count++;
 }
 
-let repoMap = new Map();
 async function findRepoById(repoId) {
 	if (repoMap.size == 0) {
 		await new Promise((resolve) => {
