@@ -25,6 +25,7 @@ const reposCommentedWrite = fs.createWriteStream('./data/repos-commented.csv', {
 
 let commentCount = 0;
 let commentTotal = 0;
+let commentBots = 0;
 let repoId = "";
 let gettingComments = false;
 
@@ -89,6 +90,7 @@ for (let i = 0; i < unvisitedArray.length; i++) {
 
 		commentCount = 0;
 		commentTotal = 0;
+		commentBots = 0;
 	} else {
 		console.log("Failed to find repo with ID: " + randomRepoId);
 	}
@@ -160,6 +162,10 @@ async function getComments(row) {
 						commentData.body
 					];
 
+					if (commentData.user.type == "Bots") {
+						commentBots++;
+					}
+
 					comments.push(serializeRow(comment) + "\n");
 					commentCount++;
 				}
@@ -168,7 +174,7 @@ async function getComments(row) {
 					commentsWrite.write(comment);
 				}
 
-				reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + resInit.data.length + "," + comments.length + "\n");
+				reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + resInit.data.length + "," + commentBots + "," + comments.length + "\n");
 
 				progress();
 
@@ -215,6 +221,10 @@ async function getComments(row) {
 							commentData.user.type,
 							commentData.body
 						];
+
+						if (commentData.user.type == "Bots") {
+							commentBots++;
+						}
 	
 						comments.push(serializeRow(comment) + "\n");
 						commentCount++;
@@ -224,7 +234,7 @@ async function getComments(row) {
 						commentsWrite.write(comment);
 					}
 	
-					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + (resInit.data.length + resTwo.data.length) + "," + comments.length + "\n");
+					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + (resInit.data.length + resTwo.data.length) + "," + commentBots + "," + comments.length + "\n");
 	
 					progress();
 	
@@ -272,6 +282,10 @@ async function getComments(row) {
 							commentData.user.type,
 							commentData.body
 						];
+
+						if (commentData.user.type == "Bots") {
+							commentBots++;
+						}
 	
 						comments.push(serializeRow(comment) + "\n");
 						commentCount++;
@@ -281,7 +295,7 @@ async function getComments(row) {
 						commentsWrite.write(comment);
 					}
 	
-					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + (resInit.data.length + resTwo.data.length + resThree.data.length) + "," + comments.length + "\n");
+					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + (resInit.data.length + resTwo.data.length + resThree.data.length) + "," + commentBots + "," + comments.length + "\n");
 	
 					progress();
 	
@@ -368,6 +382,10 @@ async function getComments(row) {
 								commentData.user.type,
 								commentData.body
 							];
+
+							if (commentData.user.type == "Bots") {
+								commentBots++;
+							}
 		
 							comments.push(serializeRow(comment) + "\n");
 							commentCount++;
@@ -378,7 +396,7 @@ async function getComments(row) {
 						commentsWrite.write(comment);
 					}
 		
-					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + numOfComments + "," + comments.length + "\n");
+					reposCommentedWrite.write(row.id + "," + row.name + "," + row.issues_comments_url.slice(22, -9) + "," + numOfComments + "," + commentBots + "," + comments.length + "\n");
 	
 					progress();
 	
