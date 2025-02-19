@@ -18,6 +18,9 @@ const octokit = new Octokit({
 let ratelimit = 0;
 let ratelimitReset = 0;
 
+const MAX_RETRIES = 3;
+const INITIAL_DELAY = 5000;
+
 // https://api.github.com/repos/facebook/react/comments
 
 const commentsWrite = fs.createWriteStream('./data/comments.csv', { flags: "a" });
@@ -503,13 +506,35 @@ async function getComments(row) {
 					let comments = [];
 	
 					for (let page of Object.keys(pageMap)) {
-						let resCommentsPage = await octokit.request(`GET ${link}`, {
-							headers: {
-							'X-GitHub-Api-Version': '2022-11-28'
-							},
-							per_page: 100,
-							page: page,
-						});
+						let resCommentsPage = null;
+
+						let attempts = 0;
+						let gotData = false;
+						while (attempts < MAX_RETRIES && !gotData) {
+							try {
+								resCommentsPage = await octokit.request(`GET ${link}`, {
+									headers: {
+									'X-GitHub-Api-Version': '2022-11-28'
+									},
+									per_page: 100,
+									page: page,
+								});
+
+								gotData = true;
+							} catch (e) {
+								console.log(`(${repoId}) Failed to get comments! Attempt: ${attempts} on page ${page}.`);
+								attempts++;
+								const delay = INITIAL_DELAY * Math.pow(2, attempts);
+								await new Promise(resolve => setTimeout(resolve, delay));
+							}
+						}
+						
+
+						if (resCommentsPage == null) {
+							console.log(`(${repoId}) Failed to retry comments!`);
+							reject(`(${repoId}) Failed to retry comments!`);
+							return;
+						}
 	
 						ratelimit = resCommentsPage.headers['x-ratelimit-remaining'];
 						ratelimitReset = resCommentsPage.headers['x-ratelimit-reset'];
