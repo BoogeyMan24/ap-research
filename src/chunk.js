@@ -4,8 +4,6 @@ import csv from "csv-parser";
 import { serializeRow } from './helper-functions.js';
 
 
-
-
 let fileWrite = null;
 
 let rowCount = 0;
@@ -28,7 +26,7 @@ rl.on('line', (line) => {
 		if (fileWrite != null) {
 			fileWrite.end();
 		}
-		fileWrite = fs.createWriteStream(`./data/comments-${Math.floor(rowCount / 100000)}.tsv`, { flags: "a", highWaterMark: 1024 * 1024 });
+		fileWrite = fs.createWriteStream(`./data/comment-chunks/comments-${Math.floor(rowCount / 100000)}.tsv`, { flags: "a", highWaterMark: 1024 * 1024 });
 	}
 
 	if (fileWrite != null) {
@@ -43,4 +41,3 @@ rl.on('line', (line) => {
 });
 
 rl.on('close', () => console.log(`Finished. Total rows read: ${rowCount}, Skipped: ${skippedRows}`));
-	

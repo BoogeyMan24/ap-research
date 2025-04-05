@@ -23,6 +23,7 @@
 		"is-english": "^1.3.0",
 		"langcheck": "^2.3.2",
 		"languagedetect": "^2.0.0",
+		"lucide-svelte": "^0.475.0",
 		"octokit": "^4.1.0",
 		"parse-link-header": "^2.0.0"
 	}

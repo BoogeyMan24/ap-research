@@ -26,8 +26,6 @@ let topics = new Set([
 	"book",
 	"template",
 	"documentation",
-	"crypto",
-	"dinosaur"
 ]);
 
 const fileWrite = fs.createWriteStream('./data/clean-repos.csv', { flags: "a" });
