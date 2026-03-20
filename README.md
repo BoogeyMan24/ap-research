@@ -166,4 +166,9 @@ To reproduce the data:
 
 1. Create a GitHub personal access token
 2. Add to `.env`:
+   GITHUB_TOKEN=your_token_here
+4. Run scripts:
+```bash
+node src/repos.js
+node src/comments.js
 
